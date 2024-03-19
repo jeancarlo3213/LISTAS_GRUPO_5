@@ -1,0 +1,58 @@
+﻿@page "/"
+@using ListaBlazorApp.Models
+@using ListaBlazorApp.Services
+
+<PageTitle>Home</PageTitle>
+
+<input type="text" class="form-control mb-2" @bind="Informacion" />
+
+<button class="btn btn-success" @onclick="AgregarNodoFinal">
+    Agregar Nodo Al final
+</button>
+
+<button class="btn btn-primary" @onclick="AgregarNodoInicio">
+    Agregar Nodo Al Inicio
+</button>
+
+<hr />
+
+<p class="bg-dark text-white">@Mensaje</p>
+
+<hr />
+
+<ul>
+    @foreach (var item in Lista)
+    {
+        <li>@item</li>
+    }
+</ul>
+
+@code {
+
+    public string Informacion { get; set; }
+
+    public ListaEnlazadaSimple Lista { get; set; } = new();
+
+    string Mensaje = string.Empty;
+
+    void AgregarNodoFinal()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+
+        Mensaje = Lista.AgregarNodoAlFinal(nuevoNodo);
+
+        this.Informacion = string.Empty;
+    }
+
+    void AgregarNodoInicio()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+
+        Mensaje = Lista.AgregarNodoAlInicio(nuevoNodo);
+
+        this.Informacion = string.Empty;
+    }
+
+
+
+}
