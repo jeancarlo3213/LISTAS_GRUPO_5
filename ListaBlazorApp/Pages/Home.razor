@@ -4,55 +4,138 @@
 
 <PageTitle>Home</PageTitle>
 
-<input type="text" class="form-control mb-2" @bind="Informacion" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <label>INGRESE INFORMACION</label>
+                <input type="text" style="width:100px;height:40px;" class="form-control mb-2" @bind="Informacion" />
+                <hr style="border : none;" background-color : back ; height:5px; />
+                <label>INGRESE DATO ANTES/DESPUES</label>
+                <input type="text" style="width:100px;height:40px;" class="form-control mb-2" @bind="DatoX" />
+                <hr style="border : none;" background-color : back ; height:5px; />
+                <label> INGRESE POSICION (antes de/despues de / pocicion especifica )</label>
+                <input type="text" style="width:100px;height:40px;" class="form-control mb-2" @bind="Posicion" />
+                <hr style="border : none;" background-color : back ; height:5px; />
+                <label>INGRESE DATO A BUSCAR</label>
+                <input type="text" style="width:100px;height:40px;" class="form-control mb-2" @bind="DatSearch" />
+                <hr style="border : none;" background-color : back ; height:5px; />
+            </div>
 
-<button class="btn btn-success" @onclick="AgregarNodoFinal">
-    Agregar Nodo Al final
-</button>
+            <br style="border :none ;" background-color : black ; height:40px; />
+            <div>
+                <hr />
+                <button class="btn btn-success" @onclick="AgregarNodoFinal">Agregar Nodo Al final</button>
+                <hr />
+                <button class="btn btn-primary" @onclick="AgregarNodoInicio">Agregar Nodo Al Inicio</button>
+                <hr />
+                <button class="btn btn-info" @onclick="AgregarNodoAntesDeX">Agregar Nodo Antes de X</button>
+                <hr />
+                <button class="btn btn-warning" @onclick="AgregarNodoDespuesDeX">Agregar Nodo Después de X</button>
+                <hr />
+                <button class="btn btn-secondary" @onclick="AgregarNodoEnPosicion">Agregar Nodo en Posición Especifica</button>
+                <hr />
+                <button class="btn btn-success" @onclick="AgregarNodoAntesDePosicion">Agregar Nodo Antes de Posicion</button>
+                <hr />
+                <button class="btn btn-dark" @onclick="AgregarNodoDespuesDePosicion">Agregar Nodo Después de Posicion</button>
+                <hr />
+                <button class="btn btn-primary" @onclick="BuscarElemento">Buscar Elemento</button>
+                <hr />
+                <button class="btn btn-primary" @onclick="RealizarRecorrido">Realizar Recorrido Recursivo</button>
+                <hr />
+            </div>
+        </div>
 
-<button class="btn btn-primary" @onclick="AgregarNodoInicio">
-    Agregar Nodo Al Inicio
-</button>
+        <div class="col-md-6">
+            <ul>
+                @foreach (var item in Lista)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            @if (!string.IsNullOrEmpty(Mensaje))
+            {
+                <p class="alert alert-info">@Mensaje</p>
+            }
+        </div>
+    </div>
+</div>
 
-<hr />
+@if (!string.IsNullOrEmpty(Recorrido))
+{
+    <p>Recorrido de la lista: @Recorrido</p>
+}
 
-<p class="bg-dark text-white">@Mensaje</p>
-
-<hr />
-
-<ul>
-    @foreach (var item in Lista)
-    {
-        <li>@item</li>
-    }
-</ul>
 
 @code {
 
     public string Informacion { get; set; }
-
+    public string DatoX { get; set; } 
+    public int Posicion { get; set; }
     public ListaEnlazadaSimple Lista { get; set; } = new();
-
+    public string DatSearch { get; set; }
     string Mensaje = string.Empty;
+    string Recorrido;
+
 
     void AgregarNodoFinal()
     {
         Nodo nuevoNodo = new Nodo(Informacion);
-
         Mensaje = Lista.AgregarNodoAlFinal(nuevoNodo);
-
         this.Informacion = string.Empty;
     }
 
     void AgregarNodoInicio()
     {
         Nodo nuevoNodo = new Nodo(Informacion);
-
         Mensaje = Lista.AgregarNodoAlInicio(nuevoNodo);
-
         this.Informacion = string.Empty;
     }
 
+    void AgregarNodoAntesDeX()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+        Mensaje = Lista.AgregarNodoAntesDeX(nuevoNodo, DatoX);
+        this.Informacion = string.Empty;
+    }
 
+    void AgregarNodoDespuesDeX()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+        Mensaje = Lista.AgregarNodoDespuesDeX(nuevoNodo, DatoX);
+        this.Informacion = string.Empty;
+    }
+    void AgregarNodoEnPosicion()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+        Mensaje = Lista.AgregarNodoEnPosicion(nuevoNodo, Posicion);
+        this.Informacion = string.Empty;
+    }
+    void AgregarNodoAntesDePosicion()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+        Mensaje = Lista.AgregarNodoAntesDePosicion(nuevoNodo, Posicion);
+        this.Informacion = string.Empty;
+    }
+
+    void AgregarNodoDespuesDePosicion()
+    {
+        Nodo nuevoNodo = new Nodo(Informacion);
+        Mensaje = Lista.AgregarNodoDespuesDePosicion(nuevoNodo, Posicion);
+        this.Informacion = string.Empty;
+    }
+    void BuscarElemento()
+    {
+        Mensaje = Lista.BuscarElemento(DatSearch);
+        DatSearch = string.Empty;
+    }
+    void RealizarRecorrido()
+    {
+        Recorrido = Lista.RecorridoRecursivo(Lista.PrimerNodo);
+    }
 
 }
